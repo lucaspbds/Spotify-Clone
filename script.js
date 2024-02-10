@@ -3,11 +3,13 @@ const bandName = document.getElementById("band-name");
 const cover = document.getElementById("cover");
 const song = document.getElementById("audio");
 const play = document.getElementById("play");
+const next = document.getElementById("next");
+const previous = document.getElementById("previous");
 
 const vienna = {
     songName: "Vienna",
     artist: "Billy Joel", 
-    file: "Billy Joel - Vienna.mp3"
+    file: "Billy Joel - Vienna"
 };
 
 const youCouldBeMine = {
@@ -40,6 +42,28 @@ let pauseMusic = () => {
     isPlaying = false;
 }
 
+let nextMusic = () => {
+    if (index === playlist.length - 1){
+        index = 0;
+    }
+    else{
+        index += 1;
+    }
+    loadSong()
+    playMusic()
+}
+
+let previousMusic = () => {
+    if (index === 0){
+        index = playlist.length - 1;
+    }
+    else{
+        index -= 1;
+    }
+    loadSong()
+    playMusic()
+}
+
 let playPauseDecider = () => {
     if (isPlaying === true) {
         pauseMusic();
@@ -50,10 +74,14 @@ let playPauseDecider = () => {
 }
 
 let loadSong = () => {
-    cover.src = `Images/${playlist[index].file}.jpg`
-    song.src = `Songs/${playlist[index].file}.mp3`
-    songName.src = playlist[index].songName
-    bandName.src = playlist[index].bandName
+    cover.src = `Images/${playlist[index].file}.jpg`;
+    song.src = `Songs/${playlist[index].file}.mp3`;
+    songName.innerText = playlist[index].songName;
+    bandName.innerText = playlist[index].artist;
 }
 
+loadSong();
+
 play.addEventListener("click", playPauseDecider);
+next.addEventListener("click", nextMusic)
+previous.addEventListener("click", previousMusic)
