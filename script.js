@@ -3,7 +3,6 @@ const bandName = document.getElementById("band-name");
 const cover = document.getElementById("cover");
 const song = document.getElementById("audio");
 const play = document.getElementById("play");
-let playlist = []
 
 const vienna = {
     songName: "Vienna",
@@ -24,7 +23,8 @@ const sobreExaltado = {
 };
 
 let isPlaying = false;
-
+const playlist = [vienna, youCouldBeMine, sobreExaltado];
+let index = 0;
 
 let playMusic = () => {
     play.querySelector(".bi").classList.remove("bi-play-circle-fill");
@@ -47,6 +47,13 @@ let playPauseDecider = () => {
     else{
         playMusic();
     }
+}
+
+let loadSong = () => {
+    cover.src = `Images/${playlist[index].file}.jpg`
+    song.src = `Songs/${playlist[index].file}.mp3`
+    songName.src = playlist[index].songName
+    bandName.src = playlist[index].bandName
 }
 
 play.addEventListener("click", playPauseDecider);
