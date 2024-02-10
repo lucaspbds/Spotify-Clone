@@ -12,6 +12,13 @@ body{
 }
 /*vh = vertical height)*/
 
+button{
+    background-color: inherit;
+    color: inherit;
+    border: none;
+    cursor: pointer;
+}
+
 #below-cover{
     display: flex;
     flex-direction: row;
@@ -51,7 +58,7 @@ body{
 }
 
 #song-name{
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: bolder;
 }
 
