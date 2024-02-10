@@ -5,6 +5,9 @@ const song = document.getElementById("audio");
 const play = document.getElementById("play");
 const next = document.getElementById("next");
 const previous = document.getElementById("previous");
+const currentProgress = document.getElementById("current-progress");
+const progressContainer = document.getElementById("progress-container");
+const like = document.getElementById("like");
 
 const vienna = {
     songName: "Vienna",
@@ -25,6 +28,7 @@ const sobreExaltado = {
 };
 
 let isPlaying = false;
+let isenjoying = false;
 const playlist = [vienna, youCouldBeMine, sobreExaltado];
 let index = 0;
 
@@ -80,8 +84,44 @@ let loadSong = () => {
     bandName.innerText = playlist[index].artist;
 }
 
+let updateProgressBar = () => {
+    const barWidth = (song.currentTime/song.duration)*100;
+    currentProgress.style.setProperty("--progress", `${barWidth}%`);
+}
+
+let jumpTo = (event) => {
+    const width = progressContainer.clientWidth;
+    const clickPosition = event.offsetX
+    const jumpToTime = (clickPosition/width) * song.duration;
+    song.currentTime = jumpToTime;
+}
+
+let likeMusic = () => {
+    like.querySelector(".bi").classList.remove("bi-heart")
+    like.querySelector(".bi").classList.add("bi-heart-fill") 
+    isenjoying = true
+}
+
+let disLikeMusic = () => {
+    like.querySelector(".bi").classList.remove("bi-heart-fill")
+    like.querySelector(".bi").classList.add("bi-heart")
+    isenjoying = false
+}
+
+let likeDislikeDecider = () => {
+    if (isenjoying === false){
+        likeMusic()
+    }
+    else{
+        disLikeMusic()
+    }
+
+}
 loadSong();
 
 play.addEventListener("click", playPauseDecider);
-next.addEventListener("click", nextMusic)
-previous.addEventListener("click", previousMusic)
+next.addEventListener("click", nextMusic);
+previous.addEventListener("click", previousMusic);
+song.addEventListener("timeupdate", updateProgressBar);
+progressContainer.addEventListener("click", jumpTo);
+like.addEventListener("click", likeDislikeDecider)
