@@ -1,8 +1,5 @@
 body{
-    background-image: linear-gradient(
-        #3B585D,
-        #1D282A
-    );
+    background-image: linear-gradient(#3B585D,#1D282A);
     height: 100vh;
     color: white;
     font-family: sans-serif, Verdana, Geneva, Tahoma;
