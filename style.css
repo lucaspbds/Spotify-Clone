@@ -95,6 +95,7 @@ button{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-family: inherit;
     font-size: smaller;
     margin-top: 1.5%;
 

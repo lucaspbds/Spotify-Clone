@@ -91,14 +91,15 @@ let loadSong = () => {
     bandName.innerText = sortedPlaylist[index].artist;
 }
 
-let updateProgressBar = () => {
+let updateProgress = () => {
     const barWidth = (song.currentTime/song.duration)*100;
     currentProgress.style.setProperty("--progress", `${barWidth}%`);
+    updateCurrentTime();
 }
 
 let jumpTo = (event) => {
     const width = progressContainer.clientWidth;
-    const clickPosition = event.offsetX
+    const clickPosition = event.offsetX;
     const jumpToTime = (clickPosition/width) * song.duration;
     song.currentTime = jumpToTime;
 }
@@ -139,26 +140,26 @@ let shuffleArray = (preShuffleArray) => {
 
 let shuffleButtonClicked = () => {
     if(isShuffled === false){
-        isShuffled = true
-        shuffleArray(sortedPlaylist)
-        shuffleButton.classList.add("button-active")
+        isShuffled = true;
+        shuffleArray(sortedPlaylist);
+        shuffleButton.classList.add("button-active");
     }
     else{
-        isShuffled = false
-        sortedPlaylist = [...originalPlaylist]
-        shuffleButton.classList.remove("button-active")
+        isShuffled = false;
+        sortedPlaylist = [...originalPlaylist];
+        shuffleButton.classList.remove("button-active");
     }
 }
 
 let repeatButtonClicked = () => {
     if (repeatOn === false){
         repeatOn = true;
-        repeatButton.classList.add("button-active")
-        nextOrRepeat()
+        repeatButton.classList.add("button-active");
+        nextOrRepeat();
     }
     else {
-        repeatOn = false
-        repeatButton.classList.remove("button-active")
+        repeatOn = false;
+        repeatButton.classList.remove("button-active");
     }
 }
 
@@ -167,8 +168,23 @@ let nextOrRepeat = () => {
         nextMusic();
     }
     else{
-        playMusic()
+        playMusic();
     }
+}
+
+let formatTime = (originalNumber) => {
+    let hours = Math.floor(originalNumber / 3600);
+    let min = Math.floor((originalNumber - 3600 * hours) / 60)
+    let seg = Math.floor(originalNumber - 3600 * hours - 60 * min)
+    return `${hours.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}:${seg.toString().padStart(2, "0")}`
+}
+
+let updateCurrentTime = () => {
+    songTime.innerText = formatTime(song.currentTime);
+}
+
+let updateTotalTime = () => {
+    totalTime.innerText = formatTime(song.duration);
 }
 
 loadSong();
@@ -176,9 +192,10 @@ loadSong();
 play.addEventListener("click", playPauseDecider);
 next.addEventListener("click", nextMusic);
 previous.addEventListener("click", previousMusic);
-song.addEventListener("timeupdate", updateProgressBar);
-song.addEventListener("ended", nextOrRepeat)
+song.addEventListener("timeupdate", updateProgress);
+song.addEventListener("ended", nextOrRepeat);
+song.addEventListener("loadedmetadata", updateTotalTime);
 progressContainer.addEventListener("click", jumpTo);
-like.addEventListener("click", likeDislikeDecider)
-shuffleButton.addEventListener("click", shuffleButtonClicked)
-repeatButton.addEventListener("click", repeatButtonClicked)
+like.addEventListener("click", likeDislikeDecider);
+shuffleButton.addEventListener("click", shuffleButtonClicked);
+repeatButton.addEventListener("click", repeatButtonClicked);
