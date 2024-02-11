@@ -85,6 +85,11 @@ button{
 
 #progress-container{
     padding-bottom: 5%;
+    cursor: pointer;
+}
+
+.button-active{
+    color: rgb(13, 161, 20);
 }
 
 

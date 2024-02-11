@@ -8,6 +8,7 @@ const previous = document.getElementById("previous");
 const currentProgress = document.getElementById("current-progress");
 const progressContainer = document.getElementById("progress-container");
 const like = document.getElementById("like");
+const shuffleButton = document.getElementById("shuffle");
 
 const vienna = {
     songName: "Vienna",
@@ -29,7 +30,9 @@ const sobreExaltado = {
 
 let isPlaying = false;
 let isenjoying = false;
-const playlist = [vienna, youCouldBeMine, sobreExaltado];
+let isShuffled = false;
+const originalPlaylist = [vienna, youCouldBeMine, sobreExaltado];
+let sortedPlaylist = [...originalPlaylist];
 let index = 0;
 
 let playMusic = () => {
@@ -47,25 +50,25 @@ let pauseMusic = () => {
 }
 
 let nextMusic = () => {
-    if (index === playlist.length - 1){
+    if (index === sortedPlaylist.length - 1){
         index = 0;
     }
     else{
         index += 1;
     }
-    loadSong()
-    playMusic()
+    loadSong();
+    playMusic();
 }
 
 let previousMusic = () => {
     if (index === 0){
-        index = playlist.length - 1;
+        index = sortedPlaylist.length - 1;
     }
     else{
         index -= 1;
     }
-    loadSong()
-    playMusic()
+    loadSong();
+    playMusic();
 }
 
 let playPauseDecider = () => {
@@ -78,10 +81,10 @@ let playPauseDecider = () => {
 }
 
 let loadSong = () => {
-    cover.src = `Images/${playlist[index].file}.jpg`;
-    song.src = `Songs/${playlist[index].file}.mp3`;
-    songName.innerText = playlist[index].songName;
-    bandName.innerText = playlist[index].artist;
+    cover.src = `Images/${sortedPlaylist[index].file}.jpg`;
+    song.src = `Songs/${sortedPlaylist[index].file}.mp3`;
+    songName.innerText = sortedPlaylist[index].songName;
+    bandName.innerText = sortedPlaylist[index].artist;
 }
 
 let updateProgressBar = () => {
@@ -97,26 +100,52 @@ let jumpTo = (event) => {
 }
 
 let likeMusic = () => {
-    like.querySelector(".bi").classList.remove("bi-heart")
-    like.querySelector(".bi").classList.add("bi-heart-fill") 
-    isenjoying = true
+    like.querySelector(".bi").classList.remove("bi-heart");
+    like.querySelector(".bi").classList.add("bi-heart-fill") ;
+    isenjoying = true;
 }
 
 let disLikeMusic = () => {
-    like.querySelector(".bi").classList.remove("bi-heart-fill")
-    like.querySelector(".bi").classList.add("bi-heart")
-    isenjoying = false
+    like.querySelector(".bi").classList.remove("bi-heart-fill");
+    like.querySelector(".bi").classList.add("bi-heart");
+    isenjoying = false;
 }
 
 let likeDislikeDecider = () => {
     if (isenjoying === false){
-        likeMusic()
+        likeMusic();
     }
     else{
-        disLikeMusic()
+        disLikeMusic();
     }
 
 }
+
+let shuffleArray = (preShuffleArray) => {
+    const size = preShuffleArray.length;
+    let currentIndex = size - 1;
+    while(currentIndex > 0){
+        let randomIndex = Math.floor(Math.random() * size);
+        let aux = preShuffleArray[currentIndex];
+        preShuffleArray[currentIndex] = preShuffleArray[randomIndex];
+        preShuffleArray[randomIndex] = aux;
+        currentIndex -= 1;
+    }
+}
+
+let shuffleButtonClicked = () => {
+    if(isShuffled === false){
+        isShuffled = true
+        shuffleArray(sortedPlaylist)
+        shuffleButton.classList.add("button-active")
+    }
+    else{
+        isShuffled = false
+        sortedPlaylist = [...originalPlaylist]
+        shuffleButton.classList.remove("button-active")
+    }
+}
+
 loadSong();
 
 play.addEventListener("click", playPauseDecider);
@@ -125,3 +154,4 @@ previous.addEventListener("click", previousMusic);
 song.addEventListener("timeupdate", updateProgressBar);
 progressContainer.addEventListener("click", jumpTo);
 like.addEventListener("click", likeDislikeDecider)
+shuffleButton.addEventListener("click", shuffleButtonClicked)
