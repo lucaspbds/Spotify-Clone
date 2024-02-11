@@ -9,6 +9,9 @@ const currentProgress = document.getElementById("current-progress");
 const progressContainer = document.getElementById("progress-container");
 const like = document.getElementById("like");
 const shuffleButton = document.getElementById("shuffle");
+const repeatButton = document.getElementById("repeat");
+const songTime = document.getElementById("song-time");
+const totalTime = document.getElementById("total-time");
 
 const vienna = {
     songName: "Vienna",
@@ -31,6 +34,7 @@ const sobreExaltado = {
 let isPlaying = false;
 let isenjoying = false;
 let isShuffled = false;
+let repeatOn = false;
 const originalPlaylist = [vienna, youCouldBeMine, sobreExaltado];
 let sortedPlaylist = [...originalPlaylist];
 let index = 0;
@@ -146,12 +150,35 @@ let shuffleButtonClicked = () => {
     }
 }
 
+let repeatButtonClicked = () => {
+    if (repeatOn === false){
+        repeatOn = true;
+        repeatButton.classList.add("button-active")
+        nextOrRepeat()
+    }
+    else {
+        repeatOn = false
+        repeatButton.classList.remove("button-active")
+    }
+}
+
+let nextOrRepeat = () => {
+    if (repeatOn === false){
+        nextMusic();
+    }
+    else{
+        playMusic()
+    }
+}
+
 loadSong();
 
 play.addEventListener("click", playPauseDecider);
 next.addEventListener("click", nextMusic);
 previous.addEventListener("click", previousMusic);
 song.addEventListener("timeupdate", updateProgressBar);
+song.addEventListener("ended", nextOrRepeat)
 progressContainer.addEventListener("click", jumpTo);
 like.addEventListener("click", likeDislikeDecider)
 shuffleButton.addEventListener("click", shuffleButtonClicked)
+repeatButton.addEventListener("click", repeatButtonClicked)

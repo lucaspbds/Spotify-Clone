@@ -32,7 +32,7 @@ button{
 }
 
 .button{
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 .button-navigate{
@@ -84,12 +84,20 @@ button{
 }
 
 #progress-container{
-    padding-bottom: 5%;
     cursor: pointer;
 }
 
 .button-active{
     color: rgb(13, 161, 20);
+}
+
+#time-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: smaller;
+    margin-top: 1.5%;
+
 }
 
 
