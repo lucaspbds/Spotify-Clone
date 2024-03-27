@@ -7,7 +7,7 @@ const next = document.getElementById("next");
 const previous = document.getElementById("previous");
 const currentProgress = document.getElementById("current-progress");
 const progressContainer = document.getElementById("progress-container");
-const like = document.getElementById("like");
+const likeButton = document.getElementById("like");
 const shuffleButton = document.getElementById("shuffle");
 const repeatButton = document.getElementById("repeat");
 const songTime = document.getElementById("song-time");
@@ -16,23 +16,25 @@ const totalTime = document.getElementById("total-time");
 const vienna = {
     songName: "Vienna",
     artist: "Billy Joel", 
-    file: "Billy Joel - Vienna"
+    file: "Billy Joel - Vienna",
+    liked: false
 };
 
 const youCouldBeMine = {
     songName: "You Could Be Mine",
     artist: "Guns N Roses",
-    file: "Guns N Roses  - You Could Be Mine"
+    file: "Guns N Roses  - You Could Be Mine",
+    liked: false
 };
 
 const sobreExaltado = {
     songName: "Sobre-Exaltado",
     artist: "Comunidade Católica Shalom",
-    file: "Shalom - Sobre-Exaltdo"
+    file: "Shalom - Sobre-Exaltdo",
+    liked: false
 };
 
 let isPlaying = false;
-let isenjoying = false;
 let isShuffled = false;
 let repeatOn = false;
 const originalPlaylist = [vienna, youCouldBeMine, sobreExaltado];
@@ -89,6 +91,7 @@ let loadSong = () => {
     song.src = `Songs/${sortedPlaylist[index].file}.mp3`;
     songName.innerText = sortedPlaylist[index].songName;
     bandName.innerText = sortedPlaylist[index].artist;
+    likeButtonRender();
 }
 
 let updateProgress = () => {
@@ -105,25 +108,34 @@ let jumpTo = (event) => {
 }
 
 let likeMusic = () => {
-    like.querySelector(".bi").classList.remove("bi-heart");
-    like.querySelector(".bi").classList.add("bi-heart-fill") ;
-    isenjoying = true;
+    likeButton.querySelector(".bi").classList.remove("bi-heart");
+    likeButton.querySelector(".bi").classList.add("bi-heart-fill");
+    likeButton.classList.add("button-active");
 }
 
 let disLikeMusic = () => {
-    like.querySelector(".bi").classList.remove("bi-heart-fill");
-    like.querySelector(".bi").classList.add("bi-heart");
-    isenjoying = false;
+    likeButton.querySelector(".bi").classList.remove("bi-heart-fill");
+    likeButton.querySelector(".bi").classList.add("bi-heart");
+    likeButton.classList.remove("button-active");
 }
 
-let likeDislikeDecider = () => {
-    if (isenjoying === false){
-        likeMusic();
-    }
-    else{
+let likeButtonRender = () => {
+    if (sortedPlaylist[index].liked === false){
         disLikeMusic();
     }
+    else{
+        likeMusic();
+    }
+}
 
+let likeButtonClicked = () => {
+    if(sortedPlaylist[index].liked === false){
+        sortedPlaylist[index].liked = true;
+    }
+    else{
+        sortedPlaylist[index].liked = false;
+    }
+    likeButtonRender();
 }
 
 let shuffleArray = (preShuffleArray) => {
@@ -196,6 +208,6 @@ song.addEventListener("timeupdate", updateProgress);
 song.addEventListener("ended", nextOrRepeat);
 song.addEventListener("loadedmetadata", updateTotalTime);
 progressContainer.addEventListener("click", jumpTo);
-like.addEventListener("click", likeDislikeDecider);
+likeButton.addEventListener("click", likeButtonClicked);
 shuffleButton.addEventListener("click", shuffleButtonClicked);
 repeatButton.addEventListener("click", repeatButtonClicked);
