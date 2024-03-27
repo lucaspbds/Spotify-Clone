@@ -37,7 +37,7 @@ const sobreExaltado = {
 let isPlaying = false;
 let isShuffled = false;
 let repeatOn = false;
-const originalPlaylist = [vienna, youCouldBeMine, sobreExaltado];
+const originalPlaylist = JSON.parse(localStorage.getItem("playlist")) ?? [vienna, youCouldBeMine, sobreExaltado];
 let sortedPlaylist = [...originalPlaylist];
 let index = 0;
 
@@ -136,6 +136,7 @@ let likeButtonClicked = () => {
         sortedPlaylist[index].liked = false;
     }
     likeButtonRender();
+    localStorage.setItem("playlist", JSON.stringify(originalPlaylist));
 }
 
 let shuffleArray = (preShuffleArray) => {
